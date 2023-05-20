@@ -11,7 +11,7 @@ public class LoginPanel extends JPanel {
         setLayout(null);
         setBounds(0,0,400,200);
         JLabel tileLabel= new JLabel(title);
-        tileLabel.setBounds(10,10,100,20);
+        tileLabel.setBounds(10,10,200,20);
 
         JLabel userLabel= new JLabel("Username :");
         userLabel.setBounds(10,40,100,30);
@@ -37,8 +37,9 @@ public class LoginPanel extends JPanel {
                 try {
                     if (x == 0)
                         data.checkUserAuth(userField.getText(),passField.getText());
-                    else
+                    else {
                         data.addUser(userField.getText(),passField.getText());
+                    }
                     frame.switchPanel(new MenuPanel(frame,data));
                 }
                 catch (ErrorMan er){

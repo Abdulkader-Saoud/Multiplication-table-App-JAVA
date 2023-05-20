@@ -7,11 +7,18 @@ public class MainFrame extends JFrame {
         setTitle("Multiplication table App");
         setSize(400,250);
         setResizable(true);
+        if (data.getUserCount() == 0)
+            currentPanel = new LoginPanel(this,data,"Make a Parent account !",1);
+        else
+            currentPanel = new LoginPanel(this,data,"Login",0);
 
-        //currentPanel = new LoginPanel(this,data,"Login",0);
-        currentPanel = new GamePanel(this,data); //
         add(currentPanel);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                data.saveData();
+                System.exit(0);
+            }
+        });
         setVisible(true);
     }
     public void switchPanel(JPanel panel){

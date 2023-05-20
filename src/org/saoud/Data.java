@@ -1,24 +1,46 @@
 package org.saoud;
 
+import java.io.*;
 import java.util.ArrayList;
 
-public class Data {
+public class Data implements java.io.Serializable{
+    private static final long serialVersionUID = 1L;
     private ArrayList<User> users;
     private User currentUser;
     private TwoInt a;
     private TwoInt b;
-    private int N = 5;
-
+    private int N;
     public Data(){
-        users = new ArrayList<User>();
-        a = new TwoInt(1,10);
-        b = new TwoInt(1,10);
+        try{
+            String fileName = "Data.dat";
+            ObjectInputStream reader = new ObjectInputStream(new FileInputStream(fileName));
+            users = (ArrayList<User>)reader.readObject();
+            a = (TwoInt)reader.readObject();
+            b = (TwoInt)reader.readObject();
+            N = (int) reader.readObject();
+            reader.close();
+        }
+        catch (FileNotFoundException e){
+            users = new ArrayList<User>();
+            a = new TwoInt(1,10);
+            b = new TwoInt(1,10);
+            N = 5;
+        }
+        catch (IOException e){
+            System.out.println(e.getMessage());
+        }
+        catch (ClassNotFoundException e){
+            System.out.println(e.getMessage());
+        }
     }
 
     public TwoInt getA() {
         return a;
     }
 
+    public int getUserCount(){
+        return users.size();
+    }
     public void setA(int min,int max) throws ErrorMan {
         if (max <= min)
             throw new ErrorMan("Max must be bigger than Min !");
@@ -83,9 +105,32 @@ public class Data {
         }
         if (pass.length() < 6)
             throw new ErrorMan("Very short Password");
+
+
+        if (users.size() == 0){
+            users.add(new User(name,pass,true));
+            currentUser = users.get(0);
+            return;
+        }
         users.add(new User(name,pass,false));
     }
     public void addUser(User user){
         users.add(user);
     }
+    public void saveData(){
+        try{
+            String fileName = "Data.dat";
+            ObjectOutputStream writer = new ObjectOutputStream(new FileOutputStream(fileName,false));
+            writer.writeObject(users);
+            writer.writeObject(a);
+            writer.writeObject(b);
+            writer.writeObject(N);
+
+            writer.close();
+        }
+        catch (IOException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
 }

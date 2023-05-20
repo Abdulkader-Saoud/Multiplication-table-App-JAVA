@@ -1,6 +1,7 @@
 package org.saoud;
 
-public class TwoInt {
+public class TwoInt  implements java.io.Serializable{
+    private static final long serialVersionUID = 1L;
     private int a;
     private int b;
     public TwoInt(){

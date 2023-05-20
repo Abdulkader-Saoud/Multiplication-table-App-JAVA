@@ -13,12 +13,14 @@ public class GamePanel extends JPanel {
     private int N;
     private int min = 0;
     private int sec = 0;
-    private int cCount = 0;
+    private int tmpTimer = 0;
     private TwoInt ab = new TwoInt();
+    private SessionData session;
     public GamePanel(MainFrame frame, Data data){
         this.data = data;
         this.frame = frame;
         N = data.getN() -1;
+        session = data.getCurrentUser().newSession();
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setPreferredSize(new Dimension(500,200));
 
@@ -87,20 +89,26 @@ public class GamePanel extends JPanel {
         setButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                QData qData = new QData(ab,(int)ansField.getValue() == ab.getA() * ab.getB(),sec + min * 60);
-                data.getCurrentUser().addQ(qData);
-                if (N == 0){
-                    frame.switchPanel(new MenuPanel(frame,data));
-                    return;
-                }
+                QData qData = new QData(ab.getA(), ab.getB(), (int)ansField.getValue() == ab.getA() * ab.getB(),(sec + min * 60) - tmpTimer);
+                session.addQ(qData);
+                tmpTimer = (sec + min * 60);
+
                 if ((int)ansField.getValue() == ab.getA() * ab.getB()){
-                    cCount++;
                     setButton.setForeground(Color.green);
+                    session.incCount();
 
                 }else {
                     setButton.setForeground(Color.red);
                 }
+                if (N == 0){
+                    session.setFullTime(sec +min * +60);
+                    session.setfCount(data.getN() - session.getcCount());
+                    new SessionInfoFrame(session);
+                    frame.switchPanel(new MenuPanel(frame,data));
+                    return;
+                }
                 setTQuestion(sLabel);
+
                 if (N > 1)
                     qLabel.setText(--N + " Question left ");
                 else {
