@@ -20,7 +20,7 @@ public class GamePanel extends JPanel {
         this.data = data;
         this.frame = frame;
         N = data.getN() -1;
-        session = data.getCurrentUser().newSession();
+        session = data.getChild().newSession();
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setPreferredSize(new Dimension(500,200));
 

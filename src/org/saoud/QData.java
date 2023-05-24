@@ -1,6 +1,7 @@
 package org.saoud;
 
-public class QData {
+public class QData implements java.io.Serializable{
+    private static final long serialVersionUID = 1L;
     private TwoInt twoInt;
     private Boolean isCorrect;
     private int time;

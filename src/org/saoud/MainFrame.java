@@ -1,14 +1,15 @@
 package org.saoud;
 
 import javax.swing.*;
+
 public class MainFrame extends JFrame {
     JPanel currentPanel;
     public MainFrame(Data data){
         setTitle("Multiplication table App");
         setSize(400,250);
         setResizable(true);
-        if (data.getUserCount() == 0)
-            currentPanel = new LoginPanel(this,data,"Make a Parent account !",1);
+        if (data.getParents() == null)
+            currentPanel = new LoginPanel(this,data,"Make a Parent account !",2);
         else
             currentPanel = new LoginPanel(this,data,"Login",0);
 

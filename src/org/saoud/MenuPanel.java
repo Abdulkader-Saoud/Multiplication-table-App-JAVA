@@ -43,10 +43,11 @@ public class MenuPanel extends JPanel {
         });
 
         add(Box.createRigidArea(new Dimension(0,20)));
-        add(statBut);
-        add(Box.createRigidArea(new Dimension(0,10)));
-
-        if (data.getCurrentUser().isAdmin()){
+        if (!data.isAdmin()){
+            add(statBut);
+            add(Box.createRigidArea(new Dimension(0,10)));
+        }
+        else {
             add(settingBut);
             add(Box.createRigidArea(new Dimension(0,10)));
         }
