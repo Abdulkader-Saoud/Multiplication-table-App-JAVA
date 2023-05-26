@@ -1,6 +1,7 @@
 package org.saoud;
 
 import java.io.Serial;
+import java.util.ArrayList;
 
 public class Session implements java.io.Serializable{
     @Serial
@@ -9,12 +10,17 @@ public class Session implements java.io.Serializable{
     private TwoInt a;
     private TwoInt b;
     private int N;
+    private ArrayList<SessionData> sessionData;
 
     public Session(String str,int amin,int amax,int bmin,int bmax,int N) throws ErrorMan{
         name = str;
         setLimited(amin,amax,"a");
         setLimited(bmin,bmax,"b");
         this.N = N;
+        sessionData = new ArrayList<>();
+    }
+    public void addSessionData(SessionData sd){
+        sessionData.add(sd);
     }
 
     public String getName() {

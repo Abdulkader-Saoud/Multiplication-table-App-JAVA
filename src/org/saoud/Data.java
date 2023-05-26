@@ -33,6 +33,10 @@ public class Data implements java.io.Serializable{
         }
     }
 
+    public ArrayList<Session> getSessions() {
+        return sessions;
+    }
+
     public void AddSession(Session newSe) throws ErrorMan{
         for (Session se : sessions){
             if (se.getName().compareTo(newSe.getName()) == 0)

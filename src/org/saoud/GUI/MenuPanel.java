@@ -6,14 +6,13 @@ import org.saoud.SettingPanel;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 public class MenuPanel extends JPanel {
     public MenuPanel(MainFrame frame, Data data) {
         initComponents();
         startBut.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //frame.switchPanel(new GamePanel(frame,data));
+                frame.switchPanel(new SessionSelectPanel(frame,data));
             }
         });
         settBut.addActionListener(new ActionListener() {
