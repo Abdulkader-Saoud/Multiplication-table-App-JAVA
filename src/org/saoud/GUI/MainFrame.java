@@ -1,17 +1,20 @@
-package org.saoud;
+package org.saoud.GUI;
+import org.saoud.Data;
 
-import javax.swing.*;
+import javax.swing.JPanel;
 
-public class MainFrame extends JFrame {
+public class MainFrame extends javax.swing.JFrame {
     JPanel currentPanel;
-    public MainFrame(Data data){
-        setTitle("Multiplication table App");
-        setSize(400,250);
+
+    public MainFrame(Data data) {
+        setVisible(true);
+        setSize(420,350);
         setResizable(true);
+
         if (data.getParents() == null)
-            currentPanel = new LoginPanel(this,data,"Make a Parent account !",2);
+            currentPanel = new LoginPanel(this, data, "Make a Parent account !", 2);
         else
-            currentPanel = new LoginPanel(this,data,"Login",0);
+            currentPanel = new LoginPanel(this, data, "Login", 0);
 
         add(currentPanel);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -22,7 +25,8 @@ public class MainFrame extends JFrame {
         });
         setVisible(true);
     }
-    public void switchPanel(JPanel panel){
+
+    public void switchPanel(JPanel panel) {
         remove(currentPanel);
         currentPanel = panel;
         add(currentPanel);
@@ -31,4 +35,5 @@ public class MainFrame extends JFrame {
         repaint();
 
     }
+
 }

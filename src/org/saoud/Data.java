@@ -8,26 +8,22 @@ public class Data implements java.io.Serializable{
     private static final long serialVersionUID = 1L;
     private Parents parents;
     private ArrayList<Child> children;
+    private ArrayList<Session> sessions;
     private User currentUser;
-    private TwoInt a;
-    private TwoInt b;
-    private int N;
+
+
     public Data(){
         try{
             String fileName = "Data.dat";
             ObjectInputStream reader = new ObjectInputStream(new FileInputStream(fileName));
             parents = (Parents)reader.readObject();
             children = (ArrayList<Child>) reader.readObject();
-            a = (TwoInt)reader.readObject();
-            b = (TwoInt)reader.readObject();
-            N = (int) reader.readObject();
+            sessions = (ArrayList<Session>) reader.readObject();
             reader.close();
         }
         catch (FileNotFoundException e){
             children = new ArrayList<>();
-            a = new TwoInt(1,10);
-            b = new TwoInt(1,10);
-            N = 5;
+            sessions = new ArrayList<>();
         }
         catch (IOException e){
             System.out.println(e.getMessage());
@@ -37,51 +33,13 @@ public class Data implements java.io.Serializable{
         }
     }
 
-    public TwoInt getA() {
-        return a;
-    }
-
-
-    public void setA(int min,int max) throws ErrorMan {
-        if (max <= min)
-            throw new ErrorMan("Max must be bigger than Min !");
-        if (max > 100 || min < 0)
-            throw new ErrorMan("Enter a valid input plz");
-
-        this.a = new TwoInt(min,max);
-    }
-
-    public TwoInt getB() {
-        return b;
-    }
-
-    public void setLimited(int min,int max,String str) throws ErrorMan {
-        if (max <= min)
-            throw new ErrorMan("Max must be bigger than Min !");
-        if (max > 100 || min < 0)
-            throw new ErrorMan("Enter a valid input plz");
-        if (str.compareTo("a") == 0){
-            a.setA(min);
-            a.setB(max);
-        }else {
-            b.setA(min);
-            b.setB(max);
+    public void AddSession(Session newSe) throws ErrorMan{
+        for (Session se : sessions){
+            if (se.getName().compareTo(newSe.getName()) == 0)
+                throw new ErrorMan("Try different name");
         }
-
+        sessions.add(newSe);
     }
-
-    public int getN() {
-        return N;
-    }
-
-    public void setN(int n) throws ErrorMan {
-        if (N <= 0)
-            throw new ErrorMan("Enter a valid input plz");
-        N = n;
-    }
-
-
-
     public User getCurrentUser() {
         return currentUser;
     }
@@ -112,6 +70,10 @@ public class Data implements java.io.Serializable{
         throw new ErrorMan("This info are Wrong");
     }
     public void addUser(String name, String pass) throws ErrorMan {
+        if (parents == null){
+            setParents(name,pass);
+            return;
+        }
         for (User user: children){
             if (user.getName().compareTo(name) == 0)
                 throw new ErrorMan("This User Already exists");
@@ -128,16 +90,14 @@ public class Data implements java.io.Serializable{
         parents = new Parents(name,pass);
         setCurrentUser(parents);
     }
+
     public void saveData(){
         try{
             String fileName = "Data.dat";
             ObjectOutputStream writer = new ObjectOutputStream(new FileOutputStream(fileName,false));
             writer.writeObject(parents);
             writer.writeObject(children);
-            writer.writeObject(a);
-            writer.writeObject(b);
-            writer.writeObject(N);
-
+            writer.writeObject(sessions);
             writer.close();
         }
         catch (IOException e){
