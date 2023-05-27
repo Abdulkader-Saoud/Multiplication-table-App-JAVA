@@ -1,5 +1,7 @@
 package org.saoud;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class SessionData implements java.io.Serializable{
@@ -15,8 +17,10 @@ public class SessionData implements java.io.Serializable{
         return startTime;
     }
 
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
+    public void setStartTime() {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        this.startTime = dtf.format(now);
     }
 
     public String getChildName() {

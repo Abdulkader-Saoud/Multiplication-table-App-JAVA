@@ -3,7 +3,6 @@ package org.saoud.GUI;
 import org.saoud.Data;
 import org.saoud.ErrorMan;
 import org.saoud.Session;
-import org.saoud.SettingPanel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

@@ -14,13 +14,27 @@ public class Session implements java.io.Serializable{
 
     public Session(String str,int amin,int amax,int bmin,int bmax,int N) throws ErrorMan{
         name = str;
+        System.out.println("||" +" " + amin +" " + amax +" " + bmin +" " + bmax + " " + N);
         setLimited(amin,amax,"a");
         setLimited(bmin,bmax,"b");
-        this.N = N;
+        setN(N);
         sessionData = new ArrayList<>();
+
     }
-    public void addSessionData(SessionData sd){
-        sessionData.add(sd);
+    public void addSessionData(SessionData sd) {
+        int index = 0;
+        while (index < sessionData.size() && compareSessionData(sd, sessionData.get(index)) <= 0) {
+            index++;
+        }
+        sessionData.add(index, sd);
+    }
+
+    private int compareSessionData(SessionData sd1, SessionData sd2) {
+        int cCountComp = Integer.compare(sd2.getcCount(), sd1.getcCount());
+        if (cCountComp != 0) {
+            return cCountComp;
+        }
+        return Integer.compare(sd1.getFullTime(), sd2.getFullTime());
     }
 
     public String getName() {
@@ -44,7 +58,7 @@ public class Session implements java.io.Serializable{
         if (max > 99999 || min < 0)
             throw new ErrorMan("Enter a valid input plz");
         if (str.compareTo("a") == 0){
-
+            a = new TwoInt(min,max);
         }else {
             b = new TwoInt(min,max);
         }
@@ -60,5 +74,7 @@ public class Session implements java.io.Serializable{
         N = n;
     }
 
-
+    public ArrayList<SessionData> getSessionData() {
+        return sessionData;
+    }
 }

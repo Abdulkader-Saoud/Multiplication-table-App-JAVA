@@ -1,5 +1,6 @@
-package org.saoud;
+package org.saoud.GUI;
 
+import org.saoud.Data;
 import org.saoud.GUI.LoginPanel;
 import org.saoud.GUI.MainFrame;
 import org.saoud.GUI.MenuPanel;

@@ -21,7 +21,7 @@ public class LoginPanel extends javax.swing.JPanel {
                     else {
                         data.addUser(userField.getText(),passField.getText());
                     }
-                    frame.switchPanel(new MenuPanel(frame,data));
+                    new MenuPanel(frame,data);
                 }
                 catch (ErrorMan er){
                     errorLabel.setText(er.getMessage());

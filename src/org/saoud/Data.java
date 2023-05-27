@@ -7,8 +7,8 @@ public class Data implements java.io.Serializable{
     @Serial
     private static final long serialVersionUID = 1L;
     private Parents parents;
-    private ArrayList<Child> children;
-    private ArrayList<Session> sessions;
+    private ArrayList<Child> children = new ArrayList<>() ;
+    private ArrayList<Session> sessions = new ArrayList<>() ;
     private User currentUser;
 
 
@@ -20,6 +20,10 @@ public class Data implements java.io.Serializable{
             children = (ArrayList<Child>) reader.readObject();
             sessions = (ArrayList<Session>) reader.readObject();
             reader.close();
+            if (children == null)
+                children = new ArrayList<>();
+            if (sessions == null)
+                sessions = new ArrayList<>();
         }
         catch (FileNotFoundException e){
             children = new ArrayList<>();
@@ -48,7 +52,7 @@ public class Data implements java.io.Serializable{
         return currentUser;
     }
     public Child getChild() {
-        return (Child) currentUser;
+        return (Child)currentUser;
     }
     public Parents getParents(){
         return parents;
@@ -61,15 +65,15 @@ public class Data implements java.io.Serializable{
     }
 
     public void checkUserAuth(String name, String pass) throws ErrorMan {
+        if (parents.getName().compareTo(name) == 0 && parents.getPass().compareTo(pass) == 0){
+            currentUser = parents;
+            return;
+        }
         for (User user: children){
             if (user.getName().compareTo(name) == 0 && user.getPass().compareTo(pass) == 0){
                 currentUser = user;
                 return;
             }
-        }
-        if (parents.getName().compareTo(name) == 0 && parents.getPass().compareTo(pass) == 0){
-            currentUser = parents;
-            return;
         }
         throw new ErrorMan("This info are Wrong");
     }

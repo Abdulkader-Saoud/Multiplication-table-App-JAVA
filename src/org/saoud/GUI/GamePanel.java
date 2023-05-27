@@ -1,8 +1,6 @@
 package org.saoud.GUI;
 
 import org.saoud.*;
-import org.saoud.GUI.MainFrame;
-import org.saoud.GUI.MenuPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,19 +12,22 @@ import java.util.Random;
 public class GamePanel extends JPanel {
     private Data data;
     private MainFrame frame;
+    private Session se;
     private int N;
     private int min = 0;
     private int sec = 0;
     private int tmpTimer = 0;
     private TwoInt ab = new TwoInt();
-    private SessionData session;
-    public GamePanel(MainFrame frame, Data data){
+    private SessionData sessionData;
+    public GamePanel(MainFrame frame, Data data,Session se){
         initComponents();
         this.data = data;
         this.frame = frame;
+        this.se = se;
+        N = se.getN() -1 ;
+        sessionData = new SessionData();
+        sessionData.setStartTime();
 
-        //N = data.getN() -1;
-        session = data.getChild().newSession();
         jLabel1.setText("Good Luck " + data.getCurrentUser().getName());
         Timer timer = new Timer(1000, new ActionListener() {
             @Override
@@ -49,20 +50,21 @@ public class GamePanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 QData qData = new QData(ab.getA(), ab.getB(), (int)jSpinner1.getValue() == ab.getA() * ab.getB(),(sec + min * 60) - tmpTimer);
-                session.addQ(qData);
+                sessionData.addQ(qData);
                 tmpTimer = (sec + min * 60);
 
                 if ((int)jSpinner1.getValue() == ab.getA() * ab.getB()){
                     jButton1.setForeground(Color.green);
-                    session.incCount();
+                    sessionData.incCount();
 
                 }else {
                     jButton1.setForeground(Color.red);
                 }
                 if (N == 0){
-                    session.setFullTime(sec +min * +60);
-                    //session.setfCount(data.getN() - session.getcCount());
-                    new SessionInfoFrame(session);
+                    sessionData.setFullTime(sec +min * +60);
+                    sessionData.setfCount(se.getN() - sessionData.getcCount());
+                    new SessionInfoFrame(sessionData);
+                    se.addSessionData(sessionData);
                     frame.switchPanel(new MenuPanel(frame,data));
                     return;
                 }
@@ -80,8 +82,8 @@ public class GamePanel extends JPanel {
     }
     private void setTQuestion(JLabel sLabel){
         Random rand = new Random();
-        //ab.setA(rand.nextInt(data.getA().getA(), data.getA().getB()));
-        //ab.setB(rand.nextInt(data.getA().getA(), data.getA().getB()));
+        ab.setA(rand.nextInt(se.getA().getA(), se.getA().getB()));
+        ab.setB(rand.nextInt(se.getA().getA(), se.getA().getB()));
 
         sLabel.setText(ab.getA() + " x " + ab.getB());
     }

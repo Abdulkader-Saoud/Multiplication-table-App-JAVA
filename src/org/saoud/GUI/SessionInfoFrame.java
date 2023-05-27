@@ -1,20 +1,25 @@
-package org.saoud;
+package org.saoud.GUI;
+
+import org.saoud.QData;
+import org.saoud.SessionData;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class SessionInfoFrame extends JFrame {
 
-    private SessionData sData;
     public SessionInfoFrame(SessionData sData){
         setTitle("Session Info");
         setSize(400,350);
         setResizable(true);
-        this.sData = sData;
 
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setPreferredSize(new Dimension(400,350));
+        JLabel fTimeLabel1 = new JLabel();
+        fTimeLabel1.setPreferredSize(new Dimension(400, 30));
+        fTimeLabel1.setAlignmentX(Component.CENTER_ALIGNMENT);
+        fTimeLabel1.setText(String.format(sData.getChildName() + " Started at :",sData.getStartTime()));
 
         JLabel fTimeLabel = new JLabel();
         fTimeLabel.setPreferredSize(new Dimension(400, 30));
@@ -41,12 +46,21 @@ public class SessionInfoFrame extends JFrame {
             JLabel qLabel = new JLabel();
             qLabel.setPreferredSize(new Dimension(400, 30));
             qLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-            qLabel.setText(q.getTwoInt().getA() + " x " + q.getTwoInt().getB()+ (q.getCorrect() ? " T " : " F ") + " in " + q.getTime() + " sec");
+            qLabel.setText(q.getTwoInt().getA() + " x " + q.getTwoInt().getB() + " in " + q.getTime() + " sec");
+            if (q.getCorrect())
+                qLabel.setForeground(Color.green);
+            else
+                qLabel.setForeground(Color.red);
             panel.add(qLabel);
         }
 
-        add(panel);
+
+        JScrollPane scrollPane = new JScrollPane(panel);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        add(scrollPane);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setVisible(true);
+
     }
 }

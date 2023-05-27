@@ -2,20 +2,19 @@ package org.saoud.GUI;
 
 import org.saoud.Data;
 import org.saoud.Session;
+import org.saoud.SessionData;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class SessionSelectPanel extends JPanel {
-    // x -> 0 gamePanel
-    // x -> 1 Score table
-    public SessionSelectPanel(MainFrame frame, Data data ,int x) {
+public class HighScorePanel extends JPanel {
+    public HighScorePanel(MainFrame frame, Data data,Session session) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        for (Session se : data.getSessions()) {
+        for (SessionData se : session.getSessionData()) {
             javax.swing.JButton jButton1 = new javax.swing.JButton();
-            jButton1.setText(se.getName());
+            // here jButton1.setText(se.getName());
             jButton1.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -31,6 +30,7 @@ public class SessionSelectPanel extends JPanel {
             add(Box.createVerticalStrut(10));
             add(jButton1);
         }
+
         setPreferredSize(new Dimension(getPreferredSize().width, getPreferredSize().height));
         JScrollPane scrollPane = new JScrollPane(this);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -40,6 +40,4 @@ public class SessionSelectPanel extends JPanel {
         frame.revalidate();
         frame.repaint();
     }
-
-
 }

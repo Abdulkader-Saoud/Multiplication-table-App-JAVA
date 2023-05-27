@@ -1,18 +1,18 @@
 package org.saoud.GUI;
 
 import org.saoud.Data;
-import org.saoud.SettingPanel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 public class MenuPanel extends JPanel {
     public MenuPanel(MainFrame frame, Data data) {
+        frame.getContentPane().removeAll();
         initComponents();
         startBut.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                frame.switchPanel(new SessionSelectPanel(frame,data));
+                new SessionSelectPanel(frame,data,0);
             }
         });
         settBut.addActionListener(new ActionListener() {
@@ -27,11 +27,21 @@ public class MenuPanel extends JPanel {
                 frame.switchPanel(new LoginPanel(frame,data,"Login",0));
             }
         });
+        socresBut.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new SessionSelectPanel(frame,data,1);
+            }
+        });
 
         if (data.isAdmin())
             startBut.setVisible(false);
         else
             settBut.setVisible(false);
+
+        frame.add(this);
+        frame.revalidate();
+        frame.repaint();
     }
     private void initComponents() {
 
