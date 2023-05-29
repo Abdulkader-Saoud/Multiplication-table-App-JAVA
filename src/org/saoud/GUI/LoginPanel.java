@@ -2,9 +2,6 @@ package org.saoud.GUI;
 import org.saoud.Data;
 import org.saoud.ErrorMan;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 public class LoginPanel extends javax.swing.JPanel {
 
     public LoginPanel(MainFrame frame, Data data, String title, int x) {
@@ -12,21 +9,19 @@ public class LoginPanel extends javax.swing.JPanel {
         titleLabel.setText(title);
         jButton1.setText(x == 0 ? "Login" : "Register");
         errorLabel.setVisible(false);
-        jButton1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    if (x == 0)
-                        data.checkUserAuth(userField.getText(),passField.getText());
-                    else {
-                        data.addUser(userField.getText(),passField.getText());
-                    }
-                    new MenuPanel(frame,data);
+        jButton1.addActionListener(e -> {
+            try {
+                if (x == 0)
+                    data.checkUserAuth(userField.getText(),passField.getText());
+                else {
+                    data.addUser(userField.getText(),passField.getText());
                 }
-                catch (ErrorMan er){
-                    errorLabel.setText(er.getMessage());
-                    errorLabel.setVisible(true);
-                }
+                frame.getJMenuBar().setVisible(true);
+                new MenuPanel(frame,data);
+            }
+            catch (ErrorMan er){
+                errorLabel.setText(er.getMessage());
+                errorLabel.setVisible(true);
             }
         });
     }

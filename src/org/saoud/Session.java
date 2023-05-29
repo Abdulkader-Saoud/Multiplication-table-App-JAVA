@@ -10,11 +10,10 @@ public class Session implements java.io.Serializable{
     private TwoInt a;
     private TwoInt b;
     private int N;
-    private ArrayList<SessionData> sessionData;
+    private final ArrayList<SessionData> sessionData;
 
     public Session(String str,int amin,int amax,int bmin,int bmax,int N) throws ErrorMan{
         name = str;
-        System.out.println("||" +" " + amin +" " + amax +" " + bmin +" " + bmax + " " + N);
         setLimited(amin,amax,"a");
         setLimited(bmin,bmax,"b");
         setN(N);
@@ -23,26 +22,22 @@ public class Session implements java.io.Serializable{
     }
     public void addSessionData(SessionData sd) {
         int index = 0;
-        while (index < sessionData.size() && compareSessionData(sd, sessionData.get(index)) <= 0) {
+        while (index < sessionData.size() && compareSessionData(sd, sessionData.get(index)) >= 0) {
             index++;
         }
         sessionData.add(index, sd);
     }
 
     private int compareSessionData(SessionData sd1, SessionData sd2) {
-        int cCountComp = Integer.compare(sd2.getcCount(), sd1.getcCount());
+        int cCountComp = sd2.getcCount() - sd1.getcCount();
         if (cCountComp != 0) {
             return cCountComp;
         }
-        return Integer.compare(sd1.getFullTime(), sd2.getFullTime());
+        return sd1.getFullTime() - sd2.getFullTime();
     }
 
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public TwoInt getA() {
@@ -69,7 +64,7 @@ public class Session implements java.io.Serializable{
     }
 
     public void setN(int n) throws ErrorMan {
-        if (N <= 0)
+        if (n <= 0)
             throw new ErrorMan("Enter a valid input plz");
         N = n;
     }

@@ -1,11 +1,9 @@
 package org.saoud.GUI;
 import org.saoud.Data;
 
-import javax.swing.JPanel;
-
+import javax.swing.*;
 public class MainFrame extends javax.swing.JFrame {
     public MainFrame(Data data) {
-        setVisible(true);
         setSize(420,350);
         setResizable(true);
 

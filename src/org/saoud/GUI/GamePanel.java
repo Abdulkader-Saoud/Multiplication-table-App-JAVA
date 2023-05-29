@@ -10,33 +10,33 @@ import java.util.Random;
 
 
 public class GamePanel extends JPanel {
-    private Data data;
-    private MainFrame frame;
-    private Session se;
+    private final Data data;
+    private final MainFrame frame;
+    private final Session se;
     private int N;
     private int min = 0;
     private int sec = 0;
     private int tmpTimer = 0;
-    private TwoInt ab = new TwoInt();
-    private SessionData sessionData;
+    private final TwoInt ab = new TwoInt();
+    private final SessionData sessionData;
     public GamePanel(MainFrame frame, Data data,Session se){
         initComponents();
         this.data = data;
         this.frame = frame;
         this.se = se;
+        frame.getJMenuBar().setVisible(false);
         N = se.getN() -1 ;
         sessionData = new SessionData();
         sessionData.setStartTime();
 
         jLabel1.setText("Good Luck " + data.getCurrentUser().getName());
-        Timer timer = new Timer(1000, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                sec++;
-                if (sec == 60)
-                    min++;
-                jLabel2.setText(String.format("%02d:%02d", min, sec));
+        Timer timer = new Timer(1000, e -> {
+            sec++;
+            if (sec == 60){
+                min++;
+                sec = 0;
             }
+            jLabel2.setText(String.format("%02d:%02d", min, sec));
         });
         timer.start();
         gamePart();
@@ -46,44 +46,43 @@ public class GamePanel extends JPanel {
 
         setTQuestion(jLabel4);
 
-        jButton1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                QData qData = new QData(ab.getA(), ab.getB(), (int)jSpinner1.getValue() == ab.getA() * ab.getB(),(sec + min * 60) - tmpTimer);
-                sessionData.addQ(qData);
-                tmpTimer = (sec + min * 60);
+        jButton1.addActionListener(e -> {
+            QData qData = new QData(ab.getA(), ab.getB(), (int)jSpinner1.getValue() == ab.getA() * ab.getB(),(sec + min * 60) - tmpTimer);
+            sessionData.addQ(qData);
+            tmpTimer = (sec + min * 60);
 
-                if ((int)jSpinner1.getValue() == ab.getA() * ab.getB()){
-                    jButton1.setForeground(Color.green);
-                    sessionData.incCount();
+            if ((int)jSpinner1.getValue() == ab.getA() * ab.getB()){
+                jButton1.setForeground(Color.green);
+                sessionData.incCount();
 
-                }else {
-                    jButton1.setForeground(Color.red);
-                }
-                if (N == 0){
-                    sessionData.setFullTime(sec +min * +60);
-                    sessionData.setfCount(se.getN() - sessionData.getcCount());
-                    new SessionInfoFrame(sessionData);
-                    se.addSessionData(sessionData);
-                    frame.switchPanel(new MenuPanel(frame,data));
-                    return;
-                }
-                setTQuestion(jLabel4);
-
-                if (N > 1)
-                    jLabel3.setText(--N + " Question left ");
-                else {
-                    jLabel3.setText("Last Question");
-                    N--;
-                }
-
+            }else {
+                jButton1.setForeground(Color.red);
             }
+            if (N == 0){
+                frame.getJMenuBar().setVisible(true);
+                sessionData.setFullTime(sec +min * +60);
+                sessionData.setfCount(se.getN() - sessionData.getcCount());
+                sessionData.setChildName(data.getChild().getName());
+                new SessionInfoFrame(sessionData);
+                se.addSessionData(sessionData);
+                frame.switchPanel(new MenuPanel(frame,data));
+                return;
+            }
+            setTQuestion(jLabel4);
+
+            if (N > 1)
+                jLabel3.setText(--N + " Question left ");
+            else {
+                jLabel3.setText("Last Question");
+                N--;
+            }
+
         });
     }
     private void setTQuestion(JLabel sLabel){
         Random rand = new Random();
         ab.setA(rand.nextInt(se.getA().getA(), se.getA().getB()));
-        ab.setB(rand.nextInt(se.getA().getA(), se.getA().getB()));
+        ab.setB(rand.nextInt(se.getB().getA(), se.getB().getB()));
 
         sLabel.setText(ab.getA() + " x " + ab.getB());
     }

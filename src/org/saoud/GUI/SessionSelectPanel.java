@@ -16,13 +16,11 @@ public class SessionSelectPanel extends JPanel {
         for (Session se : data.getSessions()) {
             javax.swing.JButton jButton1 = new javax.swing.JButton();
             jButton1.setText(se.getName());
-            jButton1.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    if (x == 0)
-                        frame.switchPanel(new GamePanel(frame,data,se));
-                }
-
+            jButton1.addActionListener(e -> {
+                if (x == 0)
+                    frame.switchPanel(new GamePanel(frame,data,se));
+                else
+                    frame.switchPanel(new HighScorePanel(data,se));
             });
             jButton1.setAlignmentX(Component.CENTER_ALIGNMENT);
 
