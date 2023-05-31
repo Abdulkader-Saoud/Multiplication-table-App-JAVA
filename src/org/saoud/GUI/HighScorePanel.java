@@ -7,6 +7,10 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class HighScorePanel extends JPanel {
     Session session;
@@ -29,6 +33,18 @@ public class HighScorePanel extends JPanel {
     private void initComponents() {
         jScrollPane1 = new JScrollPane();
         jTable1 = new JTable();
+        JButton rapotbtn = new JButton("Rapor");
+        if (!data.isAdmin())
+            rapotbtn.setVisible(false);
+        rapotbtn.addActionListener(e -> {
+            try {
+                if (session.writeToCsv())
+                    rapotbtn.setForeground(Color.green);
+            }catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+
+        });
         jTable1.setModel(new DefaultTableModel(
                 new Object[][]{},
                 new String[]{
@@ -50,17 +66,28 @@ public class HighScorePanel extends JPanel {
                 return canEdit[columnIndex];
             }
         });
+
         jScrollPane1.setViewportView(jTable1);
 
         GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
                 layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                        .addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+                                        .addComponent(rapotbtn, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addContainerGap())
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(rapotbtn)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+                                .addContainerGap())
         );
     }
 

@@ -1,5 +1,8 @@
 package org.saoud;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.Serial;
 import java.util.ArrayList;
 
@@ -71,5 +74,33 @@ public class Session implements java.io.Serializable{
 
     public ArrayList<SessionData> getSessionData() {
         return sessionData;
+    }
+    public boolean writeToCsv() throws IOException {
+        File csvFile = new File(name + ".csv");
+        FileWriter fileWriter = new FileWriter(csvFile);
+        StringBuilder line1 = new StringBuilder();
+        line1.append("Name");
+        line1.append(',');
+        line1.append("Start time");
+        line1.append(',');
+        line1.append("Correct");
+        line1.append(',');
+        line1.append("Finish time");
+        line1.append("\n");
+        fileWriter.write(line1.toString());
+        for (SessionData sd : sessionData) {
+            StringBuilder line = new StringBuilder();
+            line.append(sd.getChildName());
+            line.append(',');
+            line.append(sd.getStartTime());
+            line.append(',');
+            line.append(sd.getcCount());
+            line.append(',');
+            line.append(sd.getFullTime());
+            line.append("\n");
+            fileWriter.write(line.toString());
+        }
+        fileWriter.close();
+        return true;
     }
 }
