@@ -25,7 +25,6 @@ public class LoginPanel extends javax.swing.JPanel {
             }
         });
     }
-
     private void initComponents() {
 
         titleLabel = new javax.swing.JLabel();
