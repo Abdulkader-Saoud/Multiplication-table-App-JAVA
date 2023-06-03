@@ -17,12 +17,15 @@ public class GamePanel extends JPanel {
     private int tmpTimer = 0;
     private final TwoInt ab = new TwoInt();
     private final SessionData sessionData;
-    public GamePanel(MainFrame frame, Data data,Session se){
+
+
+
+    public GamePanel(MainFrame frame, Data data, Session se){
         initComponents();
         this.data = data;
         this.frame = frame;
         this.se = se;
-        frame.getJMenuBar().setVisible(false);
+        frame.setVisible(true);
         N = se.getN() -1 ;
         sessionData = new SessionData();
         sessionData.setStartTime();
@@ -38,6 +41,30 @@ public class GamePanel extends JPanel {
         });
         timer.start();
         gamePart();
+    }
+
+    public TwoInt getAb() {
+        return ab;
+    }
+
+    public JSpinner getjSpinner1() {
+        return jSpinner1;
+    }
+
+    public Data getData() {
+        return data;
+    }
+
+    public MainFrame getFrame() {
+        return frame;
+    }
+
+    public Session getSe() {
+        return se;
+    }
+
+    public SessionData getSessionData() {
+        return sessionData;
     }
     private void gamePart() {
         jLabel3.setText(N + " Question left ");
@@ -77,10 +104,10 @@ public class GamePanel extends JPanel {
 
         });
     }
-    private void setTQuestion(JLabel sLabel){
+    public void setTQuestion(JLabel sLabel){
         Random rand = new Random();
-        ab.setA(rand.nextInt(se.getA().getA(), se.getA().getB()));
-        ab.setB(rand.nextInt(se.getB().getA(), se.getB().getB()));
+        ab.setA(rand.nextInt(se.getA().getA(), se.getA().getB() + 1));
+        ab.setB(rand.nextInt(se.getB().getA(), se.getB().getB()) + 1);
 
         sLabel.setText(ab.getA() + " x " + ab.getB());
     }
