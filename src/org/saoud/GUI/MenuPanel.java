@@ -1,30 +1,29 @@
 package org.saoud.GUI;
-
-import org.saoud.Data;
-
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-public class MenuPanel extends JPanel {
-    public MenuPanel(MainFrame frame, Data data) {
-        frame.getContentPane().removeAll();
-        initComponents();
-        startBut.addActionListener(e -> new SessionSelectPanel(frame,data,0));
-        settBut.addActionListener(e -> frame.switchPanel(new SettingPanel(frame,data)));
-        logBut.addActionListener(e -> {
-            frame.getJMenuBar().setVisible(false);
-            frame.switchPanel(new LoginPanel(frame,data,"Login",0));
-        });
-        socresBut.addActionListener(e -> new SessionSelectPanel(frame,data,1));
 
-        if (data.isAdmin())
+import static org.saoud.GUI.UIPanel.getFrame;
+import static org.saoud.GUI.UIPanel.getData;
+
+public class MenuPanel extends JPanel {
+    public MenuPanel() {
+        getFrame().getContentPane().removeAll();
+        initComponents();
+        startBut.addActionListener(e -> new SessionSelectPanel(0));
+        settBut.addActionListener(e -> getFrame().switchPanel(new SettingPanel()));
+        logBut.addActionListener(e -> {
+            getFrame().getJMenuBar().setVisible(false);
+            getFrame().switchPanel(new LoginPanel("Login",0));
+        });
+        socresBut.addActionListener(e -> new SessionSelectPanel(1));
+
+        if (getData().isAdmin())
             startBut.setVisible(false);
         else
             settBut.setVisible(false);
 
-        frame.add(this);
-        frame.revalidate();
-        frame.repaint();
+        getFrame().add(this);
+        getFrame().revalidate();
+        getFrame().repaint();
     }
     private void initComponents() {
 

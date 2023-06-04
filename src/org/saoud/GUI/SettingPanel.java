@@ -1,15 +1,14 @@
 package org.saoud.GUI;
-
-import org.saoud.Data;
 import javax.swing.*;
+import static org.saoud.GUI.UIPanel.getFrame;
 
 public class SettingPanel extends JPanel {
-    public SettingPanel(MainFrame frame, Data data){
+    public SettingPanel(){
         initComponents();
 
-        jButton1.addActionListener(e -> frame.switchPanel(new LoginPanel(frame,data,"Register a Child",1)));
-        jButton2.addActionListener(e -> frame.switchPanel(new SessionPanel(frame,data)));
-        jButton3.addActionListener(e -> frame.switchPanel(new MenuPanel(frame,data)));
+        jButton1.addActionListener(e -> getFrame().switchPanel(new LoginPanel("Register a Child",1)));
+        jButton2.addActionListener(e -> getFrame().switchPanel(new SessionPanel()));
+        jButton3.addActionListener(e -> getFrame().switchPanel(new MenuPanel()));
     }
     private void initComponents() {
 

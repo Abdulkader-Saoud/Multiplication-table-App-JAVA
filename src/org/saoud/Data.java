@@ -10,11 +10,11 @@ public class Data implements java.io.Serializable{
     private ArrayList<Child> children = new ArrayList<>() ;
     private ArrayList<Session> sessions = new ArrayList<>() ;
     private User currentUser;
+    private String fileName;
 
-
-    public Data(){
+    public Data(String fileName){
         try{
-            String fileName = "Data.dat";
+            this.fileName = fileName;
             ObjectInputStream reader = new ObjectInputStream(new FileInputStream(fileName));
             parents = (Parents)reader.readObject();
             children = (ArrayList<Child>) reader.readObject();
@@ -86,6 +86,8 @@ public class Data implements java.io.Serializable{
             if (user.getName().compareTo(name) == 0)
                 throw new ErrorMan("This User Already exists");
         }
+        if (parents.getName().compareTo(name) == 0)
+            throw new ErrorMan("This User Already exists");
         if (pass.length() < 6)
             throw new ErrorMan("Very short Password");
 
@@ -101,7 +103,6 @@ public class Data implements java.io.Serializable{
 
     public void saveData(){
         try{
-            String fileName = "Data.dat";
             ObjectOutputStream writer = new ObjectOutputStream(new FileOutputStream(fileName,false));
             writer.writeObject(parents);
             writer.writeObject(children);
@@ -113,4 +114,7 @@ public class Data implements java.io.Serializable{
         }
     }
 
+    public ArrayList<Child> getChildren() {
+        return children;
+    }
 }

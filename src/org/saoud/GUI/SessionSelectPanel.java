@@ -1,24 +1,24 @@
 package org.saoud.GUI;
-
-import org.saoud.Data;
 import org.saoud.Session;
 
 import javax.swing.*;
 import java.awt.*;
+import static org.saoud.GUI.UIPanel.getFrame;
+import static org.saoud.GUI.UIPanel.getData;
 
 public class SessionSelectPanel extends JPanel {
     // x -> 0 gamePanel
     // x -> 1 Score table
-    public SessionSelectPanel(MainFrame frame, Data data ,int x) {
+    public SessionSelectPanel(int x) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        for (Session se : data.getSessions()) {
+        for (Session se : getData().getSessions()) {
             javax.swing.JButton jButton1 = new javax.swing.JButton();
             jButton1.setText(se.getName());
             jButton1.addActionListener(e -> {
                 if (x == 0)
-                    frame.switchPanel(new GamePanel(frame,data,se));
+                    getFrame().switchPanel(new GamePanel(se));
                 else
-                    frame.switchPanel(new HighScorePanel(data,se));
+                    getFrame().switchPanel(new HighScorePanel(se));
             });
             jButton1.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -31,10 +31,10 @@ public class SessionSelectPanel extends JPanel {
         JScrollPane scrollPane = new JScrollPane(this);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        frame.getContentPane().removeAll();
-        frame.getContentPane().add(scrollPane);
-        frame.revalidate();
-        frame.repaint();
+        getFrame().getContentPane().removeAll();
+        getFrame().getContentPane().add(scrollPane);
+        getFrame().revalidate();
+        getFrame().repaint();
     }
 
 

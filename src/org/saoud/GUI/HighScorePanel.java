@@ -1,5 +1,4 @@
 package org.saoud.GUI;
-import org.saoud.Data;
 import org.saoud.Session;
 import org.saoud.SessionData;
 
@@ -8,17 +7,13 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
+import static org.saoud.GUI.UIPanel.getData;
 
 public class HighScorePanel extends JPanel {
     Session session;
-    Data data;
-
-    public HighScorePanel(Data data, Session session) {
+    public HighScorePanel(Session session) {
         this.session = session;
-        this.data = data;
         initComponents();
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         for (SessionData se : session.getSessionData()) {
@@ -26,7 +21,6 @@ public class HighScorePanel extends JPanel {
             model.addRow(new Object[]{se.getChildName(), se.getStartTime(), se.getcCount(), fullTime});
         }
 
-        // Add row selection listener
         jTable1.getSelectionModel().addListSelectionListener(new RowClickListener());
     }
 
@@ -34,7 +28,7 @@ public class HighScorePanel extends JPanel {
         jScrollPane1 = new JScrollPane();
         jTable1 = new JTable();
         JButton rapotbtn = new JButton("Rapor");
-        if (!data.isAdmin())
+        if (!getData().isAdmin())
             rapotbtn.setVisible(false);
         rapotbtn.addActionListener(e -> {
             try {
@@ -99,7 +93,7 @@ public class HighScorePanel extends JPanel {
         public void valueChanged(ListSelectionEvent e) {
             if (!e.getValueIsAdjusting()) {
                 int selectedRow = jTable1.getSelectedRow();
-                if (data.isAdmin() || session.getSessionData().get(selectedRow).getChildName().compareTo(data.getCurrentUser().getName()) == 0)
+                if (getData().isAdmin() || session.getSessionData().get(selectedRow).getChildName().compareTo(getData().getCurrentUser().getName()) == 0)
                     new SessionInfoFrame(session.getSessionData().get(selectedRow));
             }
         }

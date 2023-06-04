@@ -2,9 +2,12 @@ package org.saoud.GUI;
 import org.saoud.Data;
 import org.saoud.ErrorMan;
 
+import static org.saoud.GUI.UIPanel.getFrame;
+import static org.saoud.GUI.UIPanel.getData;
+
 public class LoginPanel extends javax.swing.JPanel {
 
-    public LoginPanel(MainFrame frame, Data data, String title, int x) {
+    public LoginPanel(String title, int x) {
         initComponents();
         titleLabel.setText(title);
         jButton1.setText(x == 0 ? "Login" : "Register");
@@ -12,12 +15,12 @@ public class LoginPanel extends javax.swing.JPanel {
         jButton1.addActionListener(e -> {
             try {
                 if (x == 0)
-                    data.checkUserAuth(userField.getText(),passField.getText());
+                    getData().checkUserAuth(userField.getText(),passField.getText());
                 else {
-                    data.addUser(userField.getText(),passField.getText());
+                    getData().addUser(userField.getText(),passField.getText());
                 }
-                frame.getJMenuBar().setVisible(true);
-                new MenuPanel(frame,data);
+                getFrame().getJMenuBar().setVisible(true);
+                new MenuPanel();
             }
             catch (ErrorMan er){
                 errorLabel.setText(er.getMessage());

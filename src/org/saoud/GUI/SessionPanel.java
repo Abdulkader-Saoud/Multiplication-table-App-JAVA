@@ -1,6 +1,5 @@
 package org.saoud.GUI;
 
-import org.saoud.Data;
 import org.saoud.ErrorMan;
 import org.saoud.Session;
 
@@ -8,9 +7,12 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import static org.saoud.GUI.UIPanel.getFrame;
+import static org.saoud.GUI.UIPanel.getData;
+
 public class SessionPanel extends JPanel {
 
-    public SessionPanel (MainFrame frame, Data data){
+    public SessionPanel (){
         initComponents();
         jLabel7.setVisible(false);
         jButton1.addActionListener(new ActionListener() {
@@ -19,8 +21,8 @@ public class SessionPanel extends JPanel {
                 try {
                     Session newSession = new Session(jTextField1.getText(),(int)jSpinner1.getValue(),(int)jSpinner2.getValue()
                             ,(int)jSpinner4.getValue(),(int)jSpinner3.getValue(),(int)jSpinner5.getValue());
-                    data.AddSession(newSession);
-                    frame.switchPanel(new SettingPanel(frame,data));
+                    getData().AddSession(newSession);
+                    getFrame().switchPanel(new SettingPanel());
 
                 }catch (ErrorMan er){
                     jLabel7.setText(er.getMessage());

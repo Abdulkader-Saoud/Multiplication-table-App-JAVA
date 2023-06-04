@@ -8,8 +8,6 @@ import java.util.Random;
 
 
 public class GamePanel extends JPanel {
-    private final Data data;
-    private final MainFrame frame;
     private final Session se;
     private int N;
     private int min = 0;
@@ -20,17 +18,15 @@ public class GamePanel extends JPanel {
 
 
 
-    public GamePanel(MainFrame frame, Data data, Session se){
+    public GamePanel(Session se){
         initComponents();
-        this.data = data;
-        this.frame = frame;
         this.se = se;
-        frame.setVisible(true);
+        UIPanel.getFrame().getJMenuBar().setVisible(false);
         N = se.getN() -1 ;
         sessionData = new SessionData();
         sessionData.setStartTime();
 
-        jLabel1.setText("Good Luck " + data.getCurrentUser().getName());
+        jLabel1.setText("Good Luck " + UIPanel.getData().getCurrentUser().getName());
         Timer timer = new Timer(1000, e -> {
             sec++;
             if (sec == 60){
@@ -51,12 +47,8 @@ public class GamePanel extends JPanel {
         return jSpinner1;
     }
 
-    public Data getData() {
-        return data;
-    }
-
-    public MainFrame getFrame() {
-        return frame;
+    public JButton getjButton1() {
+        return jButton1;
     }
 
     public Session getSe() {
@@ -84,13 +76,13 @@ public class GamePanel extends JPanel {
                 jButton1.setForeground(Color.red);
             }
             if (N == 0){
-                frame.getJMenuBar().setVisible(true);
+                UIPanel.getFrame().getJMenuBar().setVisible(true);
                 sessionData.setFullTime(sec +min * +60);
                 sessionData.setfCount(se.getN() - sessionData.getcCount());
-                sessionData.setChildName(data.getChild().getName());
+                sessionData.setChildName(UIPanel.getData().getChild().getName());
                 new SessionInfoFrame(sessionData);
                 se.addSessionData(sessionData);
-                frame.switchPanel(new MenuPanel(frame,data));
+                UIPanel.getFrame().switchPanel(new MenuPanel());
                 return;
             }
             setTQuestion(jLabel4);
