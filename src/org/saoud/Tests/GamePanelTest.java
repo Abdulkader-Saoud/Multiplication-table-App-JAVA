@@ -1,6 +1,6 @@
 package org.saoud.Tests;
 
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.saoud.*;
@@ -10,6 +10,9 @@ import org.saoud.GUI.UIPanel;
 
 import java.awt.*;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 public class GamePanelTest {
@@ -19,7 +22,19 @@ public class GamePanelTest {
 
     @BeforeEach
     void setUp() throws ErrorMan {
-        Data data = new Data("DataTest.dat");
+        Data data;
+        File file = new File("Data.txt");
+        if (file.exists())
+            file.delete();
+        try{
+            ObjectInputStream reader = new ObjectInputStream(new FileInputStream("Data.txt"));
+            data = (Data) reader.readObject();
+            reader.close();
+        }
+        catch (IOException | ClassNotFoundException e){
+            data = new Data();
+            System.out.println(e.getMessage());
+        }
         data.setCurrentUser(new Child("ayshy","paskdkasd"));
         MainFrame mainFrame = new MainFrame(data);
         new UIPanel(mainFrame,data);
@@ -60,5 +75,11 @@ public class GamePanelTest {
         gamePanel.getjButton1().doClick();
         assertTrue(gamePanel.getjButton1().getForeground() == Color.red);
         assertEquals(cCount ,gamePanel.getSessionData().getcCount());
+    }
+    @AfterAll
+    public static void tearDown() {
+        File file = new File("Data.txt");
+        if (file.exists())
+            file.delete();
     }
 }

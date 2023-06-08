@@ -1,7 +1,5 @@
 package org.saoud;
 
-import java.util.ArrayList;
-
 public class User  implements java.io.Serializable{
     private static final long serialVersionUID = 1L;
     private String name;

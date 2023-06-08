@@ -1,5 +1,4 @@
 package org.saoud.GUI;
-import org.saoud.Data;
 import org.saoud.ErrorMan;
 
 import static org.saoud.GUI.UIPanel.getFrame;

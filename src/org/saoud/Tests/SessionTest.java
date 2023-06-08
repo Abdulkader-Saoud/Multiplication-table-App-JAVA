@@ -1,8 +1,9 @@
 package org.saoud.Tests;
-
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.saoud.Session;
 import org.saoud.ErrorMan;
+import java.io.File;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SessionTest {
@@ -37,5 +38,11 @@ class SessionTest {
         assertThrows(ErrorMan.class ,() ->{
             Session session = new Session("test",1,10,-1,10,10);
         } );
+    }
+    @AfterAll
+    public static void tearDown() {
+        File file = new File("Data.txt");
+        if (file.exists())
+            file.delete();
     }
 }

@@ -10,32 +10,6 @@ public class Data implements java.io.Serializable{
     private ArrayList<Child> children = new ArrayList<>() ;
     private ArrayList<Session> sessions = new ArrayList<>() ;
     private User currentUser;
-    private String fileName;
-
-    public Data(String fileName){
-        try{
-            this.fileName = fileName;
-            ObjectInputStream reader = new ObjectInputStream(new FileInputStream(fileName));
-            parents = (Parents)reader.readObject();
-            children = (ArrayList<Child>) reader.readObject();
-            sessions = (ArrayList<Session>) reader.readObject();
-            reader.close();
-            if (children == null)
-                children = new ArrayList<>();
-            if (sessions == null)
-                sessions = new ArrayList<>();
-        }
-        catch (FileNotFoundException e){
-            children = new ArrayList<>();
-            sessions = new ArrayList<>();
-        }
-        catch (IOException e){
-            System.out.println(e.getMessage());
-        }
-        catch (ClassNotFoundException e){
-            System.out.println(e.getMessage());
-        }
-    }
 
     public ArrayList<Session> getSessions() {
         return sessions;
@@ -52,7 +26,9 @@ public class Data implements java.io.Serializable{
         return currentUser;
     }
     public Child getChild() {
-        return (Child)currentUser;
+        if (currentUser instanceof Child)
+            return (Child)currentUser;
+        return null;
     }
     public Parents getParents(){
         return parents;
@@ -103,10 +79,8 @@ public class Data implements java.io.Serializable{
 
     public void saveData(){
         try{
-            ObjectOutputStream writer = new ObjectOutputStream(new FileOutputStream(fileName,false));
-            writer.writeObject(parents);
-            writer.writeObject(children);
-            writer.writeObject(sessions);
+            ObjectOutputStream writer = new ObjectOutputStream(new FileOutputStream("Data.txt",false));
+            writer.writeObject(this);
             writer.close();
         }
         catch (IOException e){

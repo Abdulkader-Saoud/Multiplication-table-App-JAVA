@@ -1,6 +1,5 @@
 package org.saoud.GUI;
 import org.saoud.Data;
-
 import javax.swing.*;
 public class MainFrame extends javax.swing.JFrame {
     public MainFrame(Data data) {

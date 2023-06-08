@@ -1,5 +1,6 @@
 package org.saoud.Tests;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.saoud.Data;
@@ -7,20 +8,33 @@ import org.saoud.ErrorMan;
 import org.saoud.Session;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class DataTest {
-    // two seesion same name
+
+    private static Data data;
     @BeforeAll
-    static void setUp(){
-        File file = new File("DataTest.dat");
+    public static void setUp(){
+        File file = new File("Data.txt");
         if (file.exists())
             file.delete();
+        try{
+            ObjectInputStream reader = new ObjectInputStream(new FileInputStream("Data.txt"));
+            data = (Data) reader.readObject();
+            reader.close();
+        }
+        catch (IOException | ClassNotFoundException e){
+            data = new Data();
+            System.out.println(e.getMessage());
+        }
     }
+    // two seesion same name
     @Test
     void checkAddingSession() throws ErrorMan {
-        Data data = new Data("DataTest.dat");
         Session session = new Session("test",1,10,2,5,4);
         Session session2 = new Session("test",1,10,2,5,4);
         data.AddSession(session);
@@ -31,7 +45,6 @@ class DataTest {
     // test wrong info login
     @Test
     void checkUserAuth(){ // wrong name right pass
-        Data data = new Data("DataTest.dat");
         assertThrows(ErrorMan.class, () -> {
             data.addUser("tName","tpass1234");
             data.checkUserAuth("no","tpass1234");
@@ -39,7 +52,6 @@ class DataTest {
     }
     @Test
     void checkUserAuth2(){// wrong pass right name
-        Data data = new Data("DataTest.dat");
         assertThrows(ErrorMan.class, () -> {
             data.addUser("tName","tpass1234");
             data.checkUserAuth("tName","tpass123");
@@ -47,25 +59,27 @@ class DataTest {
     }
     @Test
     void checkUserAuth3() throws ErrorMan { // info right
-        Data data = new Data("DataTest.dat");
-        data.addUser("tName","tpass1234");
         data.checkUserAuth("tName","tpass1234");
     }
 
     //Test to check error handling
     @Test
     void addUser1() {// check short pass
-        Data data = new Data("DataTest.dat");
         assertThrows(ErrorMan.class, () -> {
-            data.addUser("tName","tpass");
+            data.addUser("tName2","tpass");
         });
     }
     @Test
     void addUser2() {// check adding user twice
-        Data data = new Data("DataTest.dat");
         assertThrows(ErrorMan.class, () -> {
-            data.addUser("tName","tpass123");
-            data.addUser("tName","tpass123");
+            data.addUser("tName3","tpass123");
+            data.addUser("tName3","tpass123");
         });
+    }
+    @AfterAll
+    public static void done() {
+        File file = new File("Data.txt");
+        if (file.exists())
+            file.delete();
     }
 }

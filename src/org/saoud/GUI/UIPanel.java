@@ -1,8 +1,6 @@
 package org.saoud.GUI;
 
-
 import org.saoud.Data;
-
 
 public class UIPanel {
     private static Data data;

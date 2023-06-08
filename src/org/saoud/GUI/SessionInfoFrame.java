@@ -5,6 +5,9 @@ import org.saoud.SessionData;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
+
+import static org.saoud.GUI.UIPanel.getData;
 
 public class SessionInfoFrame extends JFrame {
 
@@ -19,6 +22,21 @@ public class SessionInfoFrame extends JFrame {
         JLabel fTimeLabel1 = new JLabel();
         fTimeLabel1.setPreferredSize(new Dimension(400, 30));
         fTimeLabel1.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JButton rapotbtn = new JButton("Rapor");
+        rapotbtn.setMaximumSize(new Dimension(350, 30));
+        rapotbtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        if (!getData().isAdmin())
+            rapotbtn.setVisible(false);
+        rapotbtn.addActionListener(e -> {
+            try {
+                if (sData.writeToCsv())
+                    rapotbtn.setForeground(Color.green);
+            }catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+
+        });
         fTimeLabel1.setText(String.format(sData.getChildName() + " Started at :",sData.getStartTime()));
 
         JLabel fTimeLabel = new JLabel();
@@ -38,6 +56,7 @@ public class SessionInfoFrame extends JFrame {
         fCountLabel.setForeground(Color.red);
         fCountLabel.setText("false answers count : "+ sData.getfCount());
 
+        panel.add(rapotbtn);
         panel.add(fTimeLabel);
         panel.add(tCountLabel);
         panel.add(fCountLabel);
